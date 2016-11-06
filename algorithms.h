@@ -17,14 +17,13 @@ int FIFO(int pageArr[3][17], int refString[])
 
 	int hitCount = 0;
 	int faultCount = 0;
-	int loopCount = 0;
 
 	for (int j = 0; j < 17; j++)
 	{
 		for (int k = h; k < 17; k++)
 		{
-			if (pageArr[0][j] == refString[k] || pageArr[1][j] == refString[k] ||
-				pageArr[2][j] == refString[k])
+			if (pageArr[0][k] == refString[j] || pageArr[1][k] == refString[j] ||
+				pageArr[2][k] == refString[j])
 			{
 				hitCount++;
 				continue;
@@ -42,11 +41,9 @@ int FIFO(int pageArr[3][17], int refString[])
 		}
 
 		faultCount++;
-		loopCount++;
 	}
 
-	printf("Hit count: %d\nFault count: %d\n", hitCount, faultCount);
-	printf("Total loops: %d\n\n", loopCount);
+	printf("Hit count: %d\nFault count: %d\n\n", hitCount, faultCount);
 	return pageArr;
 }
 
