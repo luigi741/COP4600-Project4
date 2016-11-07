@@ -1,8 +1,8 @@
-//============================================================================
+//=====================================================================================
 // algorithms.h
 // This file contains the functions for the page replacement algorithms
 // By: Luis Castro
-//============================================================================
+//=====================================================================================
 
 #ifndef ALGORITHMS_H
 #define ALGORITHMS_H
@@ -22,14 +22,20 @@ int FIFO(int pageArr[3][17], int refString[])
 	{
 		for (int k = h; k < 17; k++)
 		{
-			if (pageArr[0][k] == refString[j] || pageArr[1][k] == refString[j] ||
-				pageArr[2][k] == refString[j])
+			// This condition checks to see if there's going to be a page hit. 
+			if ((k > 1) && (refString[k] == pageArr[i][k-1] || refString[k] == pageArr[i][k-1]
+					|| refString[k] == pageArr[i][k-1]))
 			{
 				hitCount++;
 				continue;
 			}
+			else
+			{
+				pageArr[i][k] = refString[j];
+			}
 
-		pageArr[i][k] = refString[j];
+			// This fills the page table map properly
+			// pageArr[i][k] = refString[j];
 		}
 
 		i++;
@@ -43,7 +49,7 @@ int FIFO(int pageArr[3][17], int refString[])
 		faultCount++;
 	}
 
-	printf("Hit count: %d\nFault count: %d\n\n", hitCount, faultCount);
+	//printf("Hit count: %d\nFault count: %d\n\n", hitCount, faultCount);
 	return pageArr;
 }
 
