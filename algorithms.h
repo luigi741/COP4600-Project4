@@ -12,8 +12,14 @@
 
 int FIFO(int pageArr[3][17], int refString[])
 {
+	int buffer[3];
+
 	int i = 0;
 	int h = 0;
+
+	int count1 = 0;
+	int count2 = 0;
+	int count3 = 0;
 
 	int hitCount = 0;
 	int faultCount = 0;
@@ -22,9 +28,8 @@ int FIFO(int pageArr[3][17], int refString[])
 	{
 		for (int k = h; k < 17; k++)
 		{
-			// This condition checks to see if there's going to be a page hit. 
 			if ((k > 1) && (refString[k] == pageArr[i][k-1] || refString[k] == pageArr[i][k-1]
-					|| refString[k] == pageArr[i][k-1]))
+							|| refString[k] == pageArr[i][k-1]))
 			{
 				hitCount++;
 				continue;
@@ -33,9 +38,6 @@ int FIFO(int pageArr[3][17], int refString[])
 			{
 				pageArr[i][k] = refString[j];
 			}
-
-			// This fills the page table map properly
-			// pageArr[i][k] = refString[j];
 		}
 
 		i++;
@@ -49,7 +51,43 @@ int FIFO(int pageArr[3][17], int refString[])
 		faultCount++;
 	}
 
-	//printf("Hit count: %d\nFault count: %d\n\n", hitCount, faultCount);
+	return pageArr;
+}
+
+int OPT(int pageArr[3][17], int refString[])
+{
+	int index = 0;
+	int OPTcount = 0;
+
+	for (int j = 0; j < 17; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			// Check to see if there's going to be a page hit
+			
+			for (int k = 0; k < 3; k++)
+			{
+				if (pageArr[i][k] == refString[j+1]) 
+				{
+					OPTcount++;
+				}
+			}
+
+			// If there's a page hit, then repeat the previous column in array
+			if (OPTcount >= 1 && j > 0) 
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					pageArr[i][j] = pageArr[i][j-1];
+				}
+			}
+			else if (OPTcount == 0)
+			{
+				pageArr[i][j] = refString[j];
+			}
+		}
+	}
+
 	return pageArr;
 }
 
