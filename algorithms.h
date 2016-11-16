@@ -9,7 +9,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-// Test
+#include <limits.h>
+
 void FIFO(int pageArr[3][17], int refString[])
 {
 	int buffer[3];
@@ -70,40 +71,87 @@ void OPT(int refString[], int refSize, int pageArr[3][17])
 	while (i < size)
 	{
 		buffer[i%3] = refString[i];
+
 		for (int j = 0; j < 3; j++)
 		{
+			OPTcount = 0;
+
 			// Check if one element in the column equals next page
 			for (int k = 0; k < 3; k++)
 			{
-				if (buffer[k] == refString[i+1])
+				if (buffer[k] == refString[i])
 				{
+					printf("Page hit at pageArr[%d][%d]\n", i, k);
 					OPTcount++;
 				}
 			}
 
 			// Page hit, so repeat the previous column
-			if (OPTcount >= 1)
+			if (OPTcount > 0)
 			{	
 				for (int h = 0; h < 3; h++)
 				{
 					pageArr[h][i] = buffer[h];
 				}
-				OPTcount = 0;
 				continue;
 			}
 			// Page fault, so look ahead at refString[]
 			else if (OPTcount == 0)
 			{
-				for (int l = 0; l < 3; l++)
+				for (int x = 0; x < 3; x++)
 				{
-					//while (buffer[j] != refString[l])
+					pageArr[j][i] = buffer[j];
 				}
-				pageArr[j][i] = buffer[j];
 			}
-
-			OPTcount = 0;
 		}
-		// Increment i
+		i++;
+	}
+	printf("\n");
+}
+
+void OPT2(int refString[], int refSize, int pageArr[3][17])
+{
+	int i = 0;
+	int index = 0;
+	int OPTcount = 0;
+	int buffer[3] = {0, 0, 0};
+	int bufCount[3] = {0, 0, 0};
+	int size = refSize;
+
+	int bufferSize = sizeof(buffer) / sizeof(*buffer);
+
+	printf("Size of refString: %d\n", refSize);
+	printf("Size of buffer: %d\n\n", bufferSize);
+	printf("Optimal Page Replacement\n\n");
+	
+	while (i < size)
+	{
+		OPTcount = 0;
+		for (int j = 0; j < 3; j++)
+		{
+			if (buffer[j] == refString[i])
+			{
+				OPTcount++;
+			}
+		}
+
+		if (OPTcount == 0)
+		{
+			buffer[i%3] = refString[i];
+
+			for (int k = 0; k < 3; k++)
+			{
+				pageArr[k][i] = buffer[k];
+			}
+		}
+		else if (OPTcount > 0)
+		{
+			for (int l = 0; l < 3; l++)
+			{
+				pageArr[l][i] = buffer[l];
+			}
+		}
+
 		i++;
 	}
 }
