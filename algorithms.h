@@ -9,8 +9,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-int FIFO(int pageArr[3][17], int refString[])
+// Test
+void FIFO(int pageArr[3][17], int refString[])
 {
 	int buffer[3];
 
@@ -50,11 +50,9 @@ int FIFO(int pageArr[3][17], int refString[])
 
 		faultCount++;
 	}
-
-	return pageArr;
 }
 
-int OPT(int refString[], int refSize, int pageArr[3][17])
+void OPT(int refString[], int refSize, int pageArr[3][17])
 {
 	int i = 0;
 	int index = 0;
@@ -68,6 +66,7 @@ int OPT(int refString[], int refSize, int pageArr[3][17])
 	printf("Size of refString: %d\n", refSize);
 	printf("Size of buffer: %d\n\n", bufferSize);
 	printf("Optimal Page Replacement\n\n");
+	
 	while (i < size)
 	{
 		buffer[i%3] = refString[i];
@@ -92,6 +91,7 @@ int OPT(int refString[], int refSize, int pageArr[3][17])
 				OPTcount = 0;
 				continue;
 			}
+			// Page fault, so look ahead at refString[]
 			else if (OPTcount == 0)
 			{
 				for (int l = 0; l < 3; l++)
@@ -106,7 +106,6 @@ int OPT(int refString[], int refSize, int pageArr[3][17])
 		// Increment i
 		i++;
 	}
-	return 1;
 }
 
 #endif
