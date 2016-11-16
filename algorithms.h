@@ -67,7 +67,7 @@ int OPT(int refString[], int refSize, int pageArr[3][17])
 
 	printf("Size of refString: %d\n", refSize);
 	printf("Size of buffer: %d\n\n", bufferSize);
-
+	printf("Optimal Page Replacement\n\n");
 	while (i < size)
 	{
 		buffer[i%3] = refString[i];
@@ -103,7 +103,7 @@ int OPT(int refString[], int refSize, int pageArr[3][17])
 
 			OPTcount = 0;
 		}
-
+		// Increment i
 		i++;
 	}
 	return 1;
