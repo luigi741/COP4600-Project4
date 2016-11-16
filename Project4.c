@@ -15,6 +15,8 @@ int main()
 	int refString[17] = {1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7, 6, 3, 2, 6};
 	int pageArr[3][17];
 
+	int refSize = sizeof(refString) / sizeof(*refString);
+
 	// Fill all values of array with 0
 	for (int i = 0; i < 3; i++) 
 	{
@@ -28,7 +30,8 @@ int main()
 	//FIFO(pageArr, refString);
 
 	// Call to Optimal Page Replacement
-	OPT(pageArr, refString);
+	//OPT(pageArr, refString);
+	OPT(refString, refSize, pageArr);
 
 	// Page table map after calling FIFO
 	for (int i = 0; i < 17; i++)
