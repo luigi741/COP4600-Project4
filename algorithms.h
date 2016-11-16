@@ -156,4 +156,62 @@ void OPT2(int refString[], int refSize, int pageArr[3][17])
 	}
 }
 
+void OPT3(int refString[], int refSize, int pageArr[3][17])
+{
+	int i = 0;
+	int index = 0;
+	int OPTcount = 0;
+	int buffer[3] = {0, 0, 0};
+	int bufCount[3] = {0, 0, 0};
+	int size = refSize;
+
+	int bufferSize = sizeof(buffer) / sizeof(*buffer);
+
+	printf("Size of refString: %d\n", refSize);
+	printf("Size of buffer: %d\n\n", bufferSize);
+	printf("Optimal Page Replacement\n\n");
+	
+	while (i < size)
+	{
+		OPTcount = 0;
+		for (int j = 0; j < 3; j++)
+		{
+			if (buffer[j] == refString[i])
+			{
+				OPTcount++;
+			}
+		}
+
+		if (OPTcount == 0)
+		{
+			for (int m = 0; m < 3; m++)
+			{
+				for (int n = i; n < 17; n++)
+				{
+					if (buffer[m] != refString[n])
+					{
+						bufCount[m]++;
+					}
+				}
+			}
+
+			buffer[i%3] = refString[i];
+
+			for (int k = 0; k < 3; k++)
+			{
+				pageArr[k][i] = buffer[k];
+			}
+		}
+		else if (OPTcount > 0)
+		{
+			for (int l = 0; l < 3; l++)
+			{
+				pageArr[l][i] = buffer[l];
+			}
+		}
+
+		i++;
+	}
+}
+
 #endif

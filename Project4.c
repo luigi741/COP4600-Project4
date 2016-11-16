@@ -32,7 +32,8 @@ int main()
 	// Call to Optimal Page Replacement
 	//OPT(pageArr, refString);
 	//OPT(refString, refSize, pageArr);
-	OPT2(refString, refSize, pageArr);
+	//OPT2(refString, refSize, pageArr);
+	OPT3(refString, refSize, pageArr);
 
 	// Page table map after calling FIFO
 	for (int i = 0; i < 17; i++)
