@@ -54,53 +54,59 @@ int FIFO(int pageArr[3][17], int refString[])
 	return pageArr;
 }
 
-int OPT(int pageArr[3][17], int refString[])
+int OPT(int refString[], int refSize, int pageArr[3][17])
 {
+	int i = 0;
 	int index = 0;
 	int OPTcount = 0;
+	int buffer[3] = {0, 0, 0};
+	int bufCount[3] = {0, 0, 0};
+	int size = refSize;
 
-	for (int j = 0; j < 17; j++)
+	int bufferSize = sizeof(buffer) / sizeof(*buffer);
+
+	printf("Size of refString: %d\n", refSize);
+	printf("Size of buffer: %d\n\n", bufferSize);
+
+	while (i < size)
 	{
-		for (int i = 0; i < 3; i++)
+		buffer[i%3] = refString[i];
+		for (int j = 0; j < 3; j++)
 		{
-			// Check to see if there's going to be a page hit
-			
+			// Check if one element in the column equals next page
 			for (int k = 0; k < 3; k++)
 			{
-				if (pageArr[i][k] == refString[j+1]) 
+				if (buffer[k] == refString[i+1])
 				{
 					OPTcount++;
 				}
 			}
 
-			// If there's a page hit, then repeat the previous column in array
-			if (OPTcount >= 1 && j > 0) 
-			{
-				for (int i = 0; i < 3; i++)
+			// Page hit, so repeat the previous column
+			if (OPTcount >= 1)
+			{	
+				for (int h = 0; h < 3; h++)
 				{
-					pageArr[i][j] = pageArr[i][j-1];
+					pageArr[h][i] = buffer[h];
 				}
+				OPTcount = 0;
+				continue;
 			}
 			else if (OPTcount == 0)
 			{
-				pageArr[i][j] = refString[j];
+				for (int l = 0; l < 3; l++)
+				{
+					//while (buffer[j] != refString[l])
+				}
+				pageArr[j][i] = buffer[j];
 			}
-		}
-	}
 
-	return pageArr;
+			OPTcount = 0;
+		}
+
+		i++;
+	}
+	return 1;
 }
 
 #endif
-
-/* Notes for Iterating through
-
-1. If at first element of map, take first page of refString
-2. If at second element of map, take first through second page of refString
-3. If at third element of map, take first through third element of refstring
-4. If at fourth element, check:
-	if (pageArr[0...2][3] == refString[3])
-		Copy pageArr[0...2][3] into pageArr[0...2][4]
-5. Repeat step 4 until last element of refString
-
-*/
