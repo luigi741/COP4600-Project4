@@ -214,4 +214,104 @@ void OPT3(int refString[], int refSize, int pageArr[3][17])
 	}
 }
 
+int LRU(int refString[], int refSize, int pageArr[3][17])
+{
+	int i = 0; //used to iterate through refString
+	int index = 0; // 
+	int LRUcount = 0;
+	int missCount = 0;
+	int buffer[3] = {0, 0, 0}; // holds copy of column
+	int bufCount[3] = {0, 0, 0}; //holds how far back each element in column is 
+	int size = refSize;
+
+	int bufferSize = sizeof(buffer) / sizeof(*buffer);
+
+	printf("Size of refString: %d\n", refSize);
+	printf("Size of buffer: %d\n\n", bufferSize);
+	printf("LRU Page Replacement\n\n");
+
+	// int i refers to refString[i]
+	while (i < size)
+	{
+		//Check next column for miss or hit
+		for (int j = 0; j < 3; j++)
+		{
+			if (buffer[j] == refString[i])
+			{
+				LRUcount++; //page hit
+			}
+		}
+
+
+		// Page hit, so repeat the previous column
+		if (LRUcount >= 1)
+		{	
+			for (int h = 0; h < 3; h++)
+			{
+				pageArr[h][i] = buffer[h];
+			}
+			//printf("PAGE HIT\n");
+			
+			LRUcount = 0;
+		}
+
+		// Else, page miss
+		else if (LRUcount == 0)
+		{
+			//int biggestIndex holds index of biggest in buffer
+			//stands for least recently used
+			int biggest = 0;
+			int biggestIndex;	
+
+			// Get a count for each element in the column
+			// pick the furthest on back.
+			for (int l = 0; l < 3; l++)
+			{
+				//Walk backwards, count for each element
+				//Put counts in buffCount
+				int x = i; // to iterate back through
+
+				while(buffer[l] != refString[x])
+				{
+					bufCount[l]++;
+					if(bufCount[l] > biggest)
+					{
+						biggestIndex = l;
+						biggest = bufCount[l];
+					}
+					
+					if(x>0)
+					{
+						x--;
+					}
+					else
+					{
+						break;
+					}
+				}	
+			}
+			biggest = 0;
+
+			//Update pageArray and buffer
+
+			buffer[biggestIndex] = refString[i];
+			for (int j = 0; j < 3; j++)
+			{
+				pageArr[j][i] = buffer[j];
+				bufCount[j] = 0;
+			}
+
+			//Reset buffCountfor the next iteration
+			int bufCount[3] = {0, 0, 0};
+			missCount++;
+			//printf("PAGE MISS\n");
+		}
+
+		LRUcount = 0;
+		i++;
+	}
+
+	return missCount;
+}
+
 #endif
