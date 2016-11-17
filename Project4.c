@@ -7,6 +7,31 @@
 
 #include "algorithms.h"
 
+void tablePrint(int pageArr[3][17])
+{
+	for (int i = 0; i < 3; i++) 
+	{
+		for (int j = 0; j < 17; j++)
+		{
+			printf("|%d", pageArr[i][j]);
+		}
+		
+		printf("|\n");
+	}
+	printf("\n");
+}
+
+void clearTable(int pageArr[3][17])
+{
+	for (int i = 0; i < 3; i++) 
+	{
+		for (int j = 0; j < 17; j++)
+		{
+			pageArr[i][j] = 0;
+		}
+	}
+}
+
 int main()
 {
 	printf("Hello World!\n");
@@ -14,7 +39,6 @@ int main()
 	
 	int refString[17] = {1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7, 6, 3, 2, 6};
 	int pageArr[3][17];
-
 	int refSize = sizeof(refString) / sizeof(*refString);
 
 	// Fill all values of array with 0
@@ -27,14 +51,25 @@ int main()
 	}
 
 	// Call to First In, First Out
-	//FIFO(pageArr, refString);
+	FIFO(refString, refSize, pageArr);
+	tablePrint(pageArr);
+	clearTable(pageArr);
 
 	// Call to Optimal Page Replacement
-	//OPT(pageArr, refString);
-	//OPT(refString, refSize, pageArr);
-	//OPT2(refString, refSize, pageArr);
-	OPT3(refString, refSize, pageArr);
+	OPT(refString, refSize, pageArr);
+	tablePrint(pageArr);
+	clearTable(pageArr);
 
+	// Call to Least Recently Used
+	int LRUmiss = LRU(refString, refSize, pageArr);
+	printf("LRU Misses: %d\n", LRUmiss);
+	tablePrint(pageArr);
+	clearTable(pageArr);
+
+	// Call to Least Frequently Used
+	LFU(refString);
+
+/*
 	// Page table map after calling FIFO
 	for (int i = 0; i < 17; i++)
 	{
@@ -52,7 +87,7 @@ int main()
 		
 		printf("|\n");
 	}
-
+*/
 	printf("\n");
 	return 0;
 }
